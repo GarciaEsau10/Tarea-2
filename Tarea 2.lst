@@ -1,0 +1,35 @@
+---------------------------------------------
+OSHONSOFT Z80 ASSEMBLER LISTING
+Line   Addr Opcode      Label   Instruction
+---------------------------------------------
+0001   0000             ;Garcia Cruz Esau Rafael
+0002   0000             ;Programa para calcular la raiz cuadrada de un  numero BCD en
+0003   0000             ;el registro B y almacenar el resultado en el C
+0004   0000             
+0005   0000                     ORG 0x0000           ; Inicio del código en la dirección 0
+0006   0000 3E 00               LD   A, 0            ; A = 0 (acumulador inicializado a 0)
+0007   0002 0E 00               LD   C, 0            ; C = 0 (resultado de la raíz cuadrada)
+0008   0004 16 00               LD   D, 0            ; D = 0 (registro temporal para almacenar A^2)
+0009   0006             
+0010   0006             SQRT_LOOP:
+0011   0006 57                  LD   D, A            ; D = A, copia de A para el cálculo de A^2
+0012   0007 82                  ADD  A, D            ; D = D + A (A^2 se construye sumando A repetidamente)
+0013   0008 30 03               JR   NC, CHECK       ; Si no hay acarreo, continuar con la comprobación
+0014   000A 0C                  INC  C               ; Incrementar C si se encontró la raíz cuadrada
+0015   000B 18 0A               JR   END             ; Saltar al final
+0016   000D             
+0017   000D             CHECK:
+0018   000D B8                  CP   B               ; Comparar A^2 con B
+0019   000E 38 04               JR   C, NEXT         ; Si A^2 < B, probar con el siguiente número
+0020   0010 3D                  DEC  A               ; Si A^2 > B, decrementar A para obtener la parte entera
+0021   0011 4F                  LD   C, A            ; Guardar la parte entera de la raíz en C
+0022   0012 18 03               JR   END             ; Saltar al final
+0023   0014             
+0024   0014             NEXT:
+0025   0014 3C                  INC  A               ; Aumentar el valor de A para probar con el siguiente
+0026   0015 18 EF               JR   SQRT_LOOP       ; Repetir el ciclo de prueba
+0027   0017             
+0028   0017             END:
+0029   0017 00                  NOP                  ; No operación (fin del programa)
+0030   0018 C3 17 00            JP   END             ; Bucle infinito para detener el programa
+Number of errors = 0
